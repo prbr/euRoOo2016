@@ -42,6 +42,9 @@ distribution <- XML::readHTMLTable(tblSource,stringsAsFactors=F,
 
 
 #save file
+save(scorers,file = "data/scorers.RData")
+save(attempts,file = "data/attempts.RData")
+save(distribution,file = "data/distribution.RData")
 write.csv(scorers,file="data/scorers.csv", row.names = F)
 write.csv(attempts,file="data/attempts.csv",row.names = F)
 write.csv(distribution,file="data/distribution.csv",row.names = F)
