@@ -6,14 +6,22 @@
 #library(RSelenium)
 #library(XML)
 
-#Scrape scorers
 
-url = 'http://www.uefa.com/uefaeuro/season=2016/statistics/round=2000448/players/kind=goals/index.html'
+#function to change url
+url = function(x)
+  sprintf('http://www.uefa.com/uefaeuro/season=2016/statistics/round=2000448/players/kind=%s/index.html',x)
 
-appURL <- url
 RSelenium::startServer()
 remDr <- RSelenium::remoteDriver(browserName = "chrome")
 remDr$open()
+
+#get goal stats
+appURL <- url("goals")
+remDr$navigate(appURL)
+webElem <- remDr$findElement(using = 'id', value = "dbPlayersStats")
+tblSource <- webElem$getPageSource()[[1]]
+scorers <- XML::readHTMLTable(tblSource,stringsAsFactors=F,
+                              colClasses = c("character",rep("integer",4),rep("character",1)))[[1]]
 remDr$navigate(appURL)
 webElem <- remDr$findElement(using = 'id', value = "dbPlayersStats")
 tblSource <- webElem$getPageSource()[[1]]
